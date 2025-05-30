@@ -1,0 +1,65 @@
+SystemName   216_H2O.siesta
+SystemLabel  216_H2O.siesta
+
+# Global system
+NetCharge 0.0
+LatticeConstant   1.0 Ang
+%block LatticeVectors
+18.621   0.0      0.0
+ 0.0    18.621    0.0
+ 0.0     0.0     18.621
+%endblock LatticeVectors
+
+# Output variables
+WriteCoordinates    10
+WriteForces          T
+WriteCoorStep        T
+WriteMDHistory       T
+WriteCoorXmol        T
+
+# DFT Options
+MeshCutoff           75 Ry
+DM.MixingWeight      0.08
+DM.NumberPulay       3
+PAO.BasisSize        SZ
+XC.functional        GGA
+XC.authors           PBE
+DM.Tolerance         9.d-4
+ReparametrizePseudos F
+WriteNetCDF          T
+
+# MD Options
+MD.TypeOfRun               qmmm
+MD.FinalTimeStep            500
+MD.LengthTimeStep        1.0 fs
+MD.TargetTemperature    300.0 K
+MD.InitialTemperature   300.0 K
+MD.TauRelax             10.0 fs
+
+# QM-Region relevant parameters
+NumberOfAtoms    3
+NumberOfSpecies  2
+%block ChemicalSpeciesLabel
+ 1   1  H
+ 2   8  O
+%endblock ChemicalSpeciesLabel
+
+AtomicCoordinatesFormat  Ang
+%block AtomicCoordinatesAndAtomicSpecies
+   10.610   8.630   9.201   2
+   10.201   7.891   9.731   1
+   11.251   9.141   9.781   1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+# QMMM Options
+QMMM.Enabled T
+QMMM.Driver SIESTA_DRIVER
+QMMM.Driver.Type pipe
+QMMM.Driver.QMRegionFile 216_H2O.siesta.coords
+QMMM.Driver.MMChargeFile 216_H2O.siesta.pc
+QMMM.Driver.ForceOutFile 216_H2O.siesta.forces
+QMMM.Cutoff           8.0000000 Ang
+QMMM.DensityCut       0.0000010 Ang
+QMMM.CoulombType 1
+QMMM.Ewald.rcut     8.0000000 Ang
+WriteXML .false.

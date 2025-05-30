@@ -1,0 +1,177 @@
+# Specify we want to use the TranSIESTA method, that is
+# Non-Equilibrium Green's Functions, to compute the electronic density.
+# Otherwise SIESTA would do it by diagonalizing the hamiltonian
+SolutionMethod transiesta
+
+# Set the value for voltage. This is just a value that we will
+# reference when we define the chemical potentials at each electrode.
+TS.Voltage -0.5 eV 
+
+
+# Don't update connections between electrodes and device in the density
+# matrix. This is just to make TranSIESTA faster. In general it should be set
+# to cross-terms to give flexibility. 
+TS.Elecs.DM.Update none
+# Some other options for the electrodes, not very relevant for us.
+TS.Elecs.DM.Init   diagon
+TS.Elecs.Bulk      true
+
+# -----------------------------------------
+#  Definition of the chemical potentials
+# -----------------------------------------
+# In this section we define the values of our chemical potentials
+# and the integration contours that should be used. In our
+# case we only want to impose two (possibly) different chemical
+# potentials. We call them Bottom and Top, just like we will call
+# our electrodes.
+#
+# First we need to list them
+%block TS.ChemPots
+  Bottom
+  Top
+%endblock TS.ChemPots
+
+# And then we go on to define each one individually.
+# We define mu, the chemical potential, with respect to V, the value
+# of TS.Voltage that we specified above.
+# And then we go on to define the integration contours that should be
+# used for the equilibrium density using this chemical potential. Note
+# that we reference contours (e.g. C-Bottom and T-Bottom) that are defined
+# further down in the input file.
+
+# The bottom chemical potential.
+%block TS.ChemPot.Bottom
+  mu V/2
+  contour.eq
+    begin
+     C-Bottom
+     T-Bottom
+    end
+%endblock TS.ChemPot.Bottom
+
+# And the top chemical potential.
+%block TS.ChemPot.Top
+  mu -V/2
+  contour.eq
+    begin
+      C-Top
+      T-Top
+    end
+%endblock TS.ChemPot.Top
+
+
+# ---------------------------------------------------
+#  Definition of equilibrium integration contours
+# ---------------------------------------------------
+# Here we describe the integration contours that should be used to compute
+# the equilibrium density. We need to add TS.Contour.X for each X that we
+# have used in the definition of the chemical potentials. Note that we define
+# a circle part and a tail part. We are describing contours with the shape
+# of the red contour in figure 2 here:
+# https://www.sciencedirect.com/science/article/pii/S001046551630306X#f000010
+#
+# For the circle part, it is very important that it goes at least 10 eV
+# below the lowest eigenvalue of your system!!
+
+# Specify the number of poles contained within the complex contour
+# during the equilibrium integration.
+# From this cutoff-energy the number of poles will be calculated
+# from the energy and the temperature.
+TS.Contours.Eq.Pole 2.5 eV
+
+# Equilibrium contour for Bottom potential
+%block TS.Contour.C-Bottom
+  part circle
+   from -40. eV + V/2 to -10 kT + V/2
+     points 22
+      method g-legendre
+%endblock TS.Contour.C-Bottom
+%block TS.Contour.T-Bottom
+  part tail
+   from prev to inf
+     points 10
+      method g-fermi
+%endblock TS.Contour.T-Bottom
+
+# Equilibrium contour for Top potential
+%block TS.Contour.C-Top
+  part circle
+   from -40. eV -V/2 to -10 kT -V/2
+     points 22
+      method g-legendre
+%endblock TS.Contour.C-Top
+%block TS.Contour.T-Top
+  part tail
+   from prev to inf
+     points 10
+      method g-fermi
+%endblock TS.Contour.T-Top
+
+# ---------------------------------------------------
+#  Definition of non-equilibrium integration contours
+# ---------------------------------------------------
+
+# In addition to defining the equilibrium contours
+# one also has to define the non-equilibrium
+# contours to denote the integration in the bias-window.
+# NOTE that one may define as many integration partitions
+# as one wishes, but generally only one is needed.
+#
+# These are of course not used in a 0V calculation.
+%block TS.Contours.nEq
+  neq
+%endblock TS.Contours.nEq
+%block TS.Contour.nEq.neq
+  part line
+   from -|V|/2 - 5 kT to |V|/2 + 5 kT
+#     delta 0.010 eV You could specify a step instead of the number of points.
+    points 40
+      method mid-rule
+%endblock TS.Contour.nEq.neq
+
+# Specifies the imaginary part of the energy during the integrations, because
+# if we do them on the real axis the functions contain discontinuities. We lift
+# the energy a little bit in the complex plane to smooth the function.
+TS.Contours.nEq.Eta    10.0 meV
+TS.Elecs.Eta           10.0 meV
+
+
+# ---------------------------------------------------
+#              Definition of electrodes
+# ---------------------------------------------------
+# Here we first list and then define all electrodes that are used
+# in our system. For each electrode we define:
+#   - HS: Path to the hamiltonian of the bulk electrode (previously computed).
+#   - chemical-potential: The name of the chemical potential to use for this
+#     electrode, as defined previously on this same file.
+#   - semi-inf-direction: The direction in which we will extend the electrode
+#     infinitely.
+#   - electrode-position: First (if positive) or last (if negative) atom index
+#     of the electrode in our full system. All electrode atoms must appear
+#     consecutively in the system!
+#   - used-atoms: How many atoms the electrode (unit cell) contains.
+#   - bloch-A<i>: How many times we have extended the unit cell of the
+#     electrode along axis "i" in our system.
+%block TS.Elecs
+  Bottom
+  Top
+%endblock TS.Elecs
+
+%block TS.Elec.Bottom
+  HS ../../electrode/electrode.TSHS
+  chemical-potential Bottom
+  semi-inf-direction -a3
+  electrode-position 1
+  used-atoms 6 
+  bloch-A1 2
+  bloch-A2 3
+%endblock
+%block TS.Elec.Top
+  HS ../../electrode/electrode.TSHS
+  chemical-potential Top
+  semi-inf-direction +a3
+  electrode-position end -1
+  used-atoms 6
+  bloch-A1 2
+  bloch-A2 3
+%endblock

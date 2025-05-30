@@ -1,0 +1,281 @@
+# QMMM Interaction parameters
+MM.Cutoff       8.0 Ang
+QMMM.Cutoff     8.0 Ang
+
+%block QM.AtomTypes
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+Au
+%endblock QM.AtomTypes
+
+%block PositionConstraints
+nt 1
+type 1
+from 1 to 144
+%endblock PositionConstraints
+
+# MM-Region  relevant parameters.
+NumberOfMMAtoms 120
+%block MM.Atoms
+ATOM      1  O   HOH     1      1.680   4.577  26.044
+ATOM      2  H1  HOH     1      1.629   3.719  26.597
+ATOM      3  H2  HOH     1      0.737   4.785  25.675
+ATOM      4  O   HOH     2      5.757   3.375  23.132
+ATOM      5  H1  HOH     2      5.252   3.846  23.770
+ATOM      6  H2  HOH     2      6.502   3.012  23.695
+ATOM      7  O   HOH     3      2.362   4.643  23.191
+ATOM      8  H1  HOH     3      2.380   4.632  24.179
+ATOM      9  H2  HOH     3      3.085   5.297  22.966
+ATOM     10  O   HOH     4      9.378   5.401  24.832
+ATOM     11  H1  HOH     4      9.171   6.272  25.259
+ATOM     12  H2  HOH     4      8.763   4.805  25.258
+ATOM     13  O   HOH     5      6.505   7.409  23.777
+ATOM     14  H1  HOH     5      7.364   7.162  23.289
+ATOM     15  H2  HOH     5      6.556   6.848  24.624
+ATOM     16  O   HOH     6      3.636   7.092  22.497
+ATOM     17  H1  HOH     6      4.591   7.204  22.692
+ATOM     18  H2  HOH     6      3.616   6.939  21.551
+ATOM     19  O   HOH     7      3.169  11.542  21.290
+ATOM     20  H1  HOH     7      2.744  12.339  21.710
+ATOM     21  H2  HOH     7      4.115  11.701  21.495
+ATOM     22  O   HOH     8      2.019   7.504  26.860
+ATOM     23  H1  HOH     8      2.827   7.873  26.540
+ATOM     24  H2  HOH     8      2.081   6.525  26.717
+ATOM     25  O   HOH     9     10.164  -0.434  15.443
+ATOM     26  H1  HOH     9     10.736   0.319  15.583
+ATOM     27  H2  HOH     9     10.376  -0.693  14.557
+ATOM     28  O   HOH    10     -1.678   2.606  26.773
+ATOM     29  H1  HOH    10     -2.242   2.539  27.542
+ATOM     30  H2  HOH    10     -0.916   2.056  27.045
+ATOM     31  O   HOH    11      4.225   0.526  25.716
+ATOM     32  H1  HOH    11      5.110   0.333  25.373
+ATOM     33  H2  HOH    11      3.748   0.720  24.860
+ATOM     34  O   HOH    12      8.769   6.596  22.228
+ATOM     35  H1  HOH    12      8.358   6.048  21.554
+ATOM     36  H2  HOH    12      9.144   5.852  22.753
+ATOM     37  O   HOH    13      4.884   8.259  18.697
+ATOM     38  H1  HOH    13      4.378   9.122  18.612
+ATOM     39  H2  HOH    13      4.213   7.621  18.818
+ATOM     40  O   HOH    14      6.868   0.213  26.683
+ATOM     41  H1  HOH    14      6.795   0.208  27.666
+ATOM     42  H2  HOH    14      7.337   1.031  26.593
+ATOM     43  O   HOH    15      4.513   2.115  15.194
+ATOM     44  H1  HOH    15      4.677   3.093  15.060
+ATOM     45  H2  HOH    15      5.392   1.784  15.504
+ATOM     46  O   HOH    16      1.059   4.716  18.180
+ATOM     47  H1  HOH    16      0.785   4.135  19.010
+ATOM     48  H2  HOH    16      1.514   4.099  17.524
+ATOM     49  O   HOH    17      1.272   1.476  26.472
+ATOM     50  H1  HOH    17      1.560   1.026  25.661
+ATOM     51  H2  HOH    17      1.782   1.060  27.206
+ATOM     52  O   HOH    18      6.390   5.134  21.086
+ATOM     53  H1  HOH    18      6.003   4.530  21.797
+ATOM     54  H2  HOH    18      5.948   4.987  20.221
+ATOM     55  O   HOH    19      7.533  11.794  18.930
+ATOM     56  H1  HOH    19      7.403  11.400  19.838
+ATOM     57  H2  HOH    19      8.301  11.362  18.606
+ATOM     58  O   HOH    20      9.530   4.489  20.175
+ATOM     59  H1  HOH    20      8.849   3.953  19.663
+ATOM     60  H2  HOH    20      9.367   4.257  21.119
+ATOM     61  O   HOH    21      2.566   1.222  18.536
+ATOM     62  H1  HOH    21      2.069   0.417  18.684
+ATOM     63  H2  HOH    21      2.671   1.684  19.452
+ATOM     64  O   HOH    22      8.028   7.048  18.772
+ATOM     65  H1  HOH    22      8.873   6.637  19.025
+ATOM     66  H2  HOH    22      7.310   6.530  19.272
+ATOM     67  O   HOH    23     -2.542   1.272  23.949
+ATOM     68  H1  HOH    23     -1.683   1.006  24.275
+ATOM     69  H2  HOH    23     -3.094   0.525  24.030
+ATOM     70  O   HOH    24     -0.231  12.710  22.859
+ATOM     71  H1  HOH    24      0.720  12.883  22.820
+ATOM     72  H2  HOH    24     -0.458  12.886  23.793
+ATOM     73  O   HOH    25      2.411  10.064  23.678
+ATOM     74  H1  HOH    25      2.308  10.637  22.910
+ATOM     75  H2  HOH    25      2.255   9.164  23.354
+ATOM     76  O   HOH    26     -0.487   1.037  18.188
+ATOM     77  H1  HOH    26     -1.175   0.395  17.827
+ATOM     78  H2  HOH    26     -0.547   0.779  19.105
+ATOM     79  O   HOH    27      6.207   0.700  21.099
+ATOM     80  H1  HOH    27      6.175   0.120  20.317
+ATOM     81  H2  HOH    27      7.022   0.427  21.592
+ATOM     82  O   HOH    28      2.502   7.057  19.530
+ATOM     83  H1  HOH    28      2.422   6.202  19.105
+ATOM     84  H2  HOH    28      1.607   7.300  19.866
+ATOM     85  O   HOH    29     -1.301   7.806  25.988
+ATOM     86  H1  HOH    29     -0.513   8.267  26.230
+ATOM     87  H2  HOH    29     -2.062   8.337  26.234
+ATOM     88  O   HOH    30      5.183   3.292  26.904
+ATOM     89  H1  HOH    30      4.936   2.383  26.483
+ATOM     90  H2  HOH    30      4.359   3.656  27.273
+ATOM     91  O   HOH    31      6.648   5.666  26.448
+ATOM     92  H1  HOH    31      6.233   4.731  26.527
+ATOM     93  H2  HOH    31      6.420   6.126  27.306
+ATOM     94  O   HOH    32      0.162   8.075  20.832
+ATOM     95  H1  HOH    32      0.758   8.427  21.493
+ATOM     96  H2  HOH    32     -0.420   7.495  21.366
+ATOM     97  O   HOH    33      7.495   1.036  15.652
+ATOM     98  H1  HOH    33      8.065   1.855  15.516
+ATOM     99  H2  HOH    33      8.171   0.407  15.408
+ATOM    100  O   HOH    34      4.961   7.565  15.991
+ATOM    101  H1  HOH    34      5.143   7.695  16.976
+ATOM    102  H2  HOH    34      5.460   8.271  15.573
+ATOM    103  O   HOH    35      4.735  13.145  18.747
+ATOM    104  H1  HOH    35      4.542  13.705  17.994
+ATOM    105  H2  HOH    35      5.460  12.553  18.446
+ATOM    106  O   HOH    36      8.880   6.167  15.820
+ATOM    107  H1  HOH    36      9.224   7.064  16.043
+ATOM    108  H2  HOH    36      8.363   5.945  16.635
+ATOM    109  O   HOH    37     12.264   1.326  15.550
+ATOM    110  H1  HOH    37     13.038   1.306  16.173
+ATOM    111  H2  HOH    37     12.742   1.366  14.680
+ATOM    112  O   HOH    38     12.816   6.256  15.510
+ATOM    113  H1  HOH    38     13.616   6.621  15.825
+ATOM    114  H2  HOH    38     12.202   6.937  15.680
+ATOM    115  O   HOH    39      5.782   4.778  15.604
+ATOM    116  H1  HOH    39      6.771   4.953  15.555
+ATOM    117  H2  HOH    39      5.387   5.595  15.303
+ATOM    118  O   HOH    40      9.721   3.359  15.306
+ATOM    119  H1  HOH    40     10.143   3.131  16.186
+ATOM    120  H2  HOH    40      9.649   4.301  15.384
+%endblock MM.Atoms    

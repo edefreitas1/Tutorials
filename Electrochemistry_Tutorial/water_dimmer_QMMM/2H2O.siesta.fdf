@@ -1,0 +1,57 @@
+SystemName   2H2O.siesta
+SystemLabel  2H2O.siesta
+WriteForces  T
+
+# Global system
+NetCharge        0.0D0
+
+LatticeConstant 1.0 Ang
+%block LatticeVectors
+ 20.0   0.0    0.0
+  0.0  20.0    0.0
+  0.0   0.0   20.0
+%endblock LatticeVectors
+
+# DFT Options
+MeshCutoff           75 Ry
+DM.MixingWeight      0.08
+DM.NumberPulay       3
+PAO.BasisSize        SZ
+XC.functional        GGA
+XC.authors           PBE
+DM.Tolerance         9.d-4
+ReparametrizePseudos F
+WriteNetCDF          T
+
+# MD Options
+MD.TypeOfRun          qmmm
+MD.FinalTimeStep      100
+MD.InitialTemperature 300.0 K
+
+# QM-Region relevant parameters
+NumberOfAtoms    3
+NumberOfSpecies  2
+%block ChemicalSpeciesLabel
+ 1   1  H
+ 2   8  O
+%endblock ChemicalSpeciesLabel
+
+AtomicCoordinatesFormat  Ang
+%block AtomicCoordinatesAndAtomicSpecies
+    0.000   0.000   0.000   2
+    0.757   0.586   0.000   1
+   19.243   0.586   0.000   1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+# MM-Region  relevant parameters.
+QMMM.Enabled T
+QMMM.Driver SIESTA_DRIVER
+QMMM.Driver.Type pipe
+QMMM.Driver.QMRegionFile 2H2O.siesta.coords
+QMMM.Driver.MMChargeFile 2H2O.siesta.pc
+QMMM.Driver.ForceOutFile 2H2O.siesta.forces
+QMMM.Cutoff           8.0000000 Ang
+QMMM.DensityCut       0.0000010 Ang
+QMMM.CoulombType 1
+QMMM.Ewald.rcut     8.0000000 Ang
+WriteXML .false.

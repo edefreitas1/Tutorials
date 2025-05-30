@@ -1,0 +1,96 @@
+SystemName       Au + water
+SystemLabel      device
+LaunchSiesta     F
+
+%include coords_QM.fdf
+%include coords_MM.fdf
+
+# We use a Single Zeta basis just to make it possible to run
+# serial calculations in a laptop for the purpose of the tutorial.
+PAO.BasisSize      SZ
+
+# Van Der Waals functional to account for dispersion.
+# Note that this should match the functional used in the electrode calculation!
+XC.functional      GGA
+XC.authors         PBE
+
+# K grid sampling of the Brillouin Zone. We run the calculation just
+# on the Gamma point.
+%block kgrid_Monkhorst_Pack
+  1  0  0  0.0
+  0  1  0  0.0
+  0  0  1  0.0
+%endblock kgrid_Monkhorst_Pack
+
+# This neglects some three body orbital-orbital overlaps, which makes the
+# problem sparser. In general, you should use it with care. In this case,
+# it allows us to have only one layer of electrode.
+NeglNonOverlapInt  true
+
+# Fineness of the real space grid. You should increase this in production
+# to at least 400 Ry (the actual value depends on the system and should be
+# converged).
+MeshCutoff          75.0 Ry
+
+# Store the density matrix in a .DM file.
+DM.UseSaveDM         true
+
+# Some parameters to control the behavior of the SCF loop.
+SCF.Mix              density
+DM.MixSCF1           true
+MaxSCFIterations     200  
+DM.MixingWeight      0.017
+DM.NumberPulay       6
+DM.Tolerance         9.d-4
+SCF.MustConverge     false
+
+# Include file containing TS options: electrodes, contours, etc...
+%include TS.fdf
+
+# Flags to save information about charges and potentials. This instructs
+# TranSIESTA to store these real space quantities in files, which sisl
+# can then read to postprocess/plot.
+SaveRho                      true
+SaveDeltaRho                 true
+SaveElectrostaticPotential   true
+SaveTotalCharge              true
+SaveTotalPotential           true
+SaveIonicCharge              true
+
+# Write partial atomic charges to the output file. We will
+# read them with sisl to analyze them!
+WriteMulliknPop 1
+WriteHirshfeldPop true
+WriteVoronoiPop true
+
+# Following, you can see an example of the flags needed to run 
+# a molecular dynamics in TS. It makes no sense here because we are
+# only requesting 1 step, but we wanted to keep it to give you a reference
+# on how to do it. (Changing the final step will run a MD)
+MD.UseSaveXV            false
+MD.TypeOfRun            Anneal
+MD.InitialTimeStep      1
+MD.FinalTimeStep        1
+MD.LengthTimeStep       1.0 fs
+MD.InitialTemperature     1.0 K
+MD.TargetTemperature    300.0 K
+MD.AnnealOption         Temperature
+MD.TauRelax             20.0 fs
+
+# As discussed in the tutorial notebook, the electrodes coordinates in our
+# system should match exactly those of the bulk electrode. This means that
+# during a MD we should keep those atoms fixed. This has no effect if we
+# are running a single point calculation.
+%block GeometryConstraints
+  position from 1 to 144
+%endblock GeometryConstraints	
+
+# Write information during the MD. Also has no effect if it is a single point
+# calculation.
+WriteCoorStep           true
+WriteForces             true
+WriteMDHistory          true
+WriteMDXmol             true
+
+ReparametrizePseudos F
+WriteNetCDF .true.

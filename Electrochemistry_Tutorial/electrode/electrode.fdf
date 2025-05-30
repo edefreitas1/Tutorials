@@ -1,0 +1,93 @@
+# Prefix for all output files
+SystemLabel     electrode
+
+# ---------------------------------------------
+#      BEGGINING OF STRUCTURAL INFORMATION
+# ---------------------------------------------
+NumberOfAtoms         6
+NumberOfSpecies       1
+
+%block ChemicalSpeciesLabel
+  1   79  Au
+%endblock ChemicalSpeciesLabel
+
+LatticeConstant    1.000 Ang
+%block LatticeVectors
+5.2380000000       0.000000000       0.000000000
+0.000000000       3.024000000       0.000000000
+0.000000000       0.000000000       7.407059520
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat Ang
+%block AtomicCoordinatesAndAtomicSpecies
+  0.000   0.000   0.000   1
+  2.619   1.512   0.000   1
+  0.873   1.512   2.469   1
+  3.492   3.024   2.469   1
+  1.746  -0.000   4.938   1
+  4.365   1.512   4.938   1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+# ---------------------------------------------
+#      END OF STRUCTURAL INFORMATION
+# ---------------------------------------------
+
+# We use a Single Zeta basis just to make it possible to run
+# serial calculations in a laptop for the purpose of the tutorial.
+PAO.BasisSize      SZ
+
+# Van Der Waals functional to account for dispersion. This is because
+# we will use this electrode in a system with water molecules, and
+# we will use a VdW functional. The electronic density of the electrode 
+# region in the full system should match whatever we have computed here.
+# Otherwise, there would be discontinuities.
+XC.functional      GGA
+XC.authors         PBE
+
+# K grid to sample the Brillouin Zone. Regular [2x3x90] grid.
+# To set this, it is crucial to know how you are going to use the electrode in
+# the device (our full system). In this case, we will repeat it 2 times in X
+# and 3 times in Y, while Z will be the semi-infinite direction.
+# The semi-infinite direction should have a huge sampling.
+# For the other directions, the number of K points here should match the number
+# of k points that will be used in the device. In the device we will just
+# use the Gamma point. However, this calculation is 2 times smaller in X and 3
+# in Y, so to match the sampling we should use a [2x3] grid in XY.
+# Alternatively, you could compute the [2x3] surface with a [1x1] kgrid, but
+# the calculation would be heavier. Also, TranSIESTA is much more efficient 
+# if you provide the small unit cell, which it can expand on the fly.  
+%block kgrid_Monkhorst_Pack
+  2  0  0  0.0
+  0  3  0  0.0
+  0  0 90  0.0 
+%endblock kgrid_Monkhorst_Pack
+
+# Since we have many K points, we parallelize over them instead of over orbitals.
+# This will of course have no effect if we are running SIESTA on 1 process.
+Diag.ParallelOverK   true
+
+# This neglects some three body orbital-orbital overlaps, which makes the
+# problem sparser. In general, you should use it with care. In this case,
+# it allows us to have only one layer of electrode.
+NeglNonOverlapInt  true 
+
+# Fineness of the real space grid. You should increase this in production
+# to at least 400 Ry (the actual value depends on the system and should be
+# converged).
+MeshCutoff         200.0 Ry
+
+# Some parameters to control the behavior of the SCF loop.
+SCF.Mix              density
+MaxSCFIterations     100
+DM.MixingWeight      0.005
+DM.NumberPulay       8
+DM.Tolerance         1.d-4
+
+# Store the density matrix in a .TSDE file and the Hamiltonian in 
+# a .TSHS file. These two lines are equivalent to passing the --electrode
+# flag to the siesta executable. 
+TS.DE.Save             .True.
+TS.HS.Save             .True.
+
+ReparametrizePseudos F
+WriteNetCDF .true.
